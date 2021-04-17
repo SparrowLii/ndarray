@@ -44,4 +44,25 @@ impl Order {
 
     /// "F" (for Fortran) is an alias for column major ordering
     pub const F: Order = Order::ColumnMajor;
+
+    /// Return Order::RowMajor if the input is true, Order::ColumnMajor otherwise
+    #[inline]
+    pub fn use_c(use_c: bool) -> Order {
+        if use_c { Order::C } else { Order::F }
+    }
+
+    /// Return Order::ColumnMajor if the input is true, Order::RowMajor otherwise
+    #[inline]
+    pub fn use_f(use_f: bool) -> Order {
+        Self::use_c(!use_f)
+    }
+
+    /// Return the transpose: row major becomes column major and vice versa.
+    #[inline]
+    pub fn transpose(self) -> Order {
+        match self {
+            Order::RowMajor => Order::ColumnMajor,
+            Order::ColumnMajor => Order::RowMajor,
+        }
+    }
 }
