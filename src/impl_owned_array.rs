@@ -168,6 +168,27 @@ impl<A, D> Array<A, D>
     /// drop of any such element, other elements may be leaked.
     ///
     /// ***Panics*** if the shapes don't agree.
+    ///
+    /// ## Example
+    ///
+    /// ```
+    /// use ndarray::Array;
+    ///
+    /// // Usage example of move_into in safe code
+    /// let mut a = Array::zeros((10, 10));
+    /// let b = Array::from_iter(0..100).into_shape((10, 10)).unwrap();
+    /// // make an MaybeUninit view so that we can *overwrite* into it.
+    /// b.move_into(a.view_mut().into_maybe_uninit());
+    ///
+    /// // Usage example using uninit
+    /// let mut a = Array::uninit((10, 10));
+    /// let b = Array::from_iter(0..100).into_shape((10, 10)).unwrap();
+    /// b.move_into(&mut a);
+    /// unsafe {
+    ///     // we can now promise we have fully initialized `a`.
+    ///     let a = a.assume_init();
+    /// }
+    /// ```
     pub fn move_into<'a, AM>(self, new_array: AM)
     where
         AM: Into<ArrayViewMut<'a, MaybeUninit<A>, D>>,
