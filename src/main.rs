@@ -2,8 +2,13 @@ use ndarray::{ShapeBuilder, IntoDimension, Dimension, StrideShape, Order};
 fn main() {
     let shape = (2, 4, 2).strides((1, 4, 2));
     println!("{:?}", can_be_viewed_reshape(shape.clone(), (2, 4, 2), Order::RowMajor).1.unwrap());
+    // output: [1, 4, 2]
     println!("{:?}", can_be_viewed_reshape(shape.clone(), (1, 2, 4, 2), Order::RowMajor).1.unwrap());
+    // output: [0, 1, 4, 2]
     println!("{:?}", can_be_viewed_reshape(shape.clone(), (2, 2, 2, 2), Order::RowMajor).1.unwrap());
+    // output: [1, 8, 4, 2]
+    println!("{:?}", can_be_viewed_reshape(shape.clone(), (2, 2, 4), Order::RowMajor).1.unwrap());
+    // output: [1, 8, 2]
 }
 fn can_be_viewed_reshape<D: Dimension, Sh: Into<StrideShape<D>>, I: IntoDimension>(from: Sh, to: I, order: Order) -> (bool, Option<I::Dim>) {
     let shape = from.into();
