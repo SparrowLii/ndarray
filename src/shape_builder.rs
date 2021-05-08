@@ -25,8 +25,8 @@ impl<D> Shape<D> {
 /// An array shape of n dimensions in c-order, f-order or custom strides.
 #[derive(Copy, Clone, Debug)]
 pub struct StrideShape<D> {
-    pub(crate) dim: D,
-    pub(crate) strides: Strides<D>,
+    pub dim: D,
+    pub strides: Strides<D>,
 }
 
 impl<D> StrideShape<D>
@@ -45,7 +45,7 @@ where
 
 /// Stride description
 #[derive(Copy, Clone, Debug)]
-pub(crate) enum Strides<D> {
+pub enum Strides<D> {
     /// Row-major ("C"-order)
     C,
     /// Column-major ("F"-order)
@@ -56,7 +56,7 @@ pub(crate) enum Strides<D> {
 
 impl<D> Strides<D> {
     /// Return strides for `dim` (computed from dimension if c/f, else return the custom stride)
-    pub(crate) fn strides_for_dim(self, dim: &D) -> D
+    pub fn strides_for_dim(self, dim: &D) -> D
     where
         D: Dimension,
     {
